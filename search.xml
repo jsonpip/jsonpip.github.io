@@ -4,9 +4,22 @@
   
     
     <entry>
-      <title>docker</title>
-      <link href="/2023/03/13/docker/"/>
-      <url>/2023/03/13/docker/</url>
+      <title></title>
+      <link href="/2023/03/13/ying-ji-xiang-ying-chang-yong-ming-ling/"/>
+      <url>/2023/03/13/ying-ji-xiang-ying-chang-yong-ming-ling/</url>
+      
+        <content type="html"><![CDATA[<h1 id="linux下常用排查命令"><a href="#linux下常用排查命令" class="headerlink" title="linux下常用排查命令"></a>linux下常用排查命令</h1><h3 id="查看用户信息"><a href="#查看用户信息" class="headerlink" title="查看用户信息"></a>查看用户信息</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">/etc/passwd <span class="token comment">#查看用户信息文件</span>/etc/shadow <span class="token comment">#查看影子文件</span>root@ecs-300419:~<span class="token comment"># awk -F: '$3==0&#123;print $1&#125;' /etc/passwd #（查看系统是否还存在其他的特权账户，uid为0，默认系统只存在root一个特权账户）</span>rootroot@ecs-300419:~<span class="token comment"># who #查看当前登录用户（tty本地登录 pts远程登录）</span>root     pts/0        <span class="token number">2023</span>-03-13 <span class="token number">12</span>:18 <span class="token punctuation">(</span><span class="token number">124.64</span>.22.137<span class="token punctuation">)</span>root@ecs-300419:~<span class="token comment"># w  #查看系统信息，想知道某一时刻用户的行为</span> <span class="token number">12</span>:23:28 up <span class="token number">120</span> days, <span class="token number">22</span>:31,  <span class="token number">2</span> users,  load average: <span class="token number">0.08</span>, <span class="token number">0.11</span>, <span class="token number">0.19</span><span class="token environment constant">USER</span>     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHATroot     pts/0    <span class="token number">124.64</span>.22.137    <span class="token number">12</span>:18    <span class="token number">0</span>.00s  <span class="token number">0</span>.01s  <span class="token number">0</span>.00s wroot@ecs-300419:~<span class="token comment"># uptime #查看登录多久，多少用户，负载</span> <span class="token number">12</span>:23:36 up <span class="token number">120</span> days, <span class="token number">22</span>:31,  <span class="token number">2</span> users,  load average: <span class="token number">0.07</span>, <span class="token number">0.11</span>, <span class="token number">0.18</span>root@ecs-300419:~<span class="token comment"># passwd -d username 删除用户密码</span>passwd: user <span class="token string">'username'</span> does not existroot@ecs-300419:~<span class="token comment"># passwd -d test </span>passwd: password expiry information changed.root@ecs-300419:~<span class="token comment"># stat /etc/passwd #查看密码文件上一次修改的时间，如果最近被修改过，可能存在问题</span>  File: /etc/passwd  Size: <span class="token number">1877</span>            Blocks: <span class="token number">8</span>          IO Block: <span class="token number">4096</span>   regular <span class="token function">file</span>Device: fc01h/64513d    Inode: <span class="token number">1337122</span>     Links: <span class="token number">1</span>Access: <span class="token punctuation">(</span>0644/-rw-r--r--<span class="token punctuation">)</span>  Uid: <span class="token punctuation">(</span>    <span class="token number">0</span>/    root<span class="token punctuation">)</span>   Gid: <span class="token punctuation">(</span>    <span class="token number">0</span>/    root<span class="token punctuation">)</span>Access: <span class="token number">2023</span>-03-13 <span class="token number">12</span>:24:24.643906285 +0800Modify: <span class="token number">2023</span>-03-13 <span class="token number">12</span>:24:24.619905948 +0800Change: <span class="token number">2023</span>-03-13 <span class="token number">12</span>:24:24.619905948 +0800 Birth: -root@ecs-300419:~<span class="token comment"># cat /etc/passwd |grep -v nologin  #查看除了不可登录以外的用户都有哪些，</span>root:x:0:0:root:/root:/bin/bashsync:x:4:65534:sync:/bin:/bin/synctss:x:106:112:TPM software stack,,,:/var/lib/tpm:/bin/falsepollinate:x:111:1::/var/cache/pollinate:/bin/falsetest:x:1000:1000::/home/test:/bin/shroot@ecs-300419:~<span class="token comment"># cat /etc/passwd |grep x:0  #查看哪些用户为root权限，有没有新增的</span>root:x:0:0:root:/root:/bin/bashroot@ecs-300419:~<span class="token comment"># cat /etc/passwd |grep /bin/bash 查看哪些用户使用shell</span>root:x:0:0:root:/root:/bin/bashroot@ecs-300419:~<span class="token comment"># awk '/\$1|\$6/&#123;print $1&#125;' /etc/shadow  #查询可以远程登录的账号</span><span class="token function">usermod</span> <span class="token parameter variable">-L</span> user  <span class="token comment">#禁用帐号，帐号无法登录，/etc/shadow 第二栏为 ! 开头</span><span class="token function">userdel</span> user     <span class="token comment">#删除 user 用户</span><span class="token function">userdel</span> <span class="token parameter variable">-r</span> user  <span class="token comment">#将删除 user 用户，并且将 /home 目录下的 user 目录一并删除</span><span class="token function">cat</span> .bash_history  <span class="token operator">>></span>history.txt <span class="token comment">#导出历史命令</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title></title>
+      <link href="/2023/03/13/java-ji-chu/"/>
+      <url>/2023/03/13/java-ji-chu/</url>
       
         <content type="html"><![CDATA[]]></content>
       
@@ -17,13 +30,50 @@
     
     
     <entry>
+      <title>docker</title>
+      <link href="/2023/03/13/docker/"/>
+      <url>/2023/03/13/docker/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Docker-compose"><a href="#Docker-compose" class="headerlink" title="Docker-compose"></a>Docker-compose</h2><p>三步骤：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Dockerfile <span class="token comment">#Dockerfile 是一个用来构建镜像的文本文件，文本内容包含了一条条构建镜像所需的指令和说明。保证我们的项目在任何地方运行</span>docker-compose.yml <span class="token comment"># Compose 是用于定义和运行多容器 Docker 应用程序的工具。通过 Compose，您可以使用 YML 文件来配置应用程序需要的所有服务。然后，使用一个命令，就可以从 YML 文件配置中创建并启动所有服务。</span>Docker-compose up<span class="token comment">#启动项目</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>官网体验</p><p><a href="https://docs.docker.com/compose/gettingstarted/">https://docs.docker.com/compose/gettingstarted/</a></p><p>用docker-compose部署redis</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">应用app.pydockerfile <span class="token comment">#应用打包为镜像</span>docker-compose.yml文件 <span class="token comment">#定义整个服务，需要的环境。web、redis 完整的上线服务</span><span class="token function">docker-compose</span> <span class="token parameter variable">-up</span> <span class="token comment">#启动compose项目</span>流程<span class="token number">1</span>.创建网络<span class="token number">2</span>.执行docker-compose.yml<span class="token number">3</span>.启动服务<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>docker小结</p><p>1.docker镜像。run&#x3D;&gt;容器</p><p>2.dockerfile构建镜像（服务打包）</p><p>3.docker-compose 启动项目（编排、多个微服务&#x2F;环境）</p><p>4.docker网络</p><h3 id="yaml规则"><a href="#yaml规则" class="headerlink" title="yaml规则"></a>yaml规则</h3><p>Docker-compose.yml 核心</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#3层</span>version:<span class="token string">''</span> <span class="token comment">#版本</span>services: <span class="token comment">#服务</span>服务1:web<span class="token comment">#服务配置</span>imagesbuildnetwork。。。服务2:redis。。。服务3.redis<span class="token comment">#其他配置 网络/卷 全局规则</span>volumesnetworksconfigs<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="Docker-swarm"><a href="#Docker-swarm" class="headerlink" title="Docker swarm"></a>Docker swarm</h2><h4 id="工作模式"><a href="#工作模式" class="headerlink" title="工作模式"></a>工作模式</h4><p>管理节点</p><p>工作节点</p><p>一般都有三个管理节点</p><p><img src="/Users/guan/Desktop/Markdown/Docker/src=http%253A%252F%252Fupload.techweb.com.cn%252Fs%252F640%252F2021%252F0827%252F1630059366565.png&refer=http%253A%252F%252Fupload.techweb.com.png" alt="img"></p><p>初始化节点 docker swarm init</p><p>Docker swarm join 加入一个节点</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#获取令牌</span><span class="token function">docker</span> swarm join-token manager<span class="token function">docker</span> swarm join-token worker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>1.生成主节点</p><p>2.加入（管理者、worker）</p><h4 id="raft协议"><a href="#raft协议" class="headerlink" title="raft协议"></a>raft协议</h4><p>保证大多数节点存活才可以用。只要大于&gt;1,集群至少大于3台！</p><p>work就是工作的、管理节点操作！3台机器设置为了管理节点</p><p>集群可用！三个主节点。&gt;1台管理节点存活</p><p>raft协议：保证大多数节点存活，才可以使用，高可用</p><h4 id="体会"><a href="#体会" class="headerlink" title="体会"></a>体会</h4><p>弹性、扩缩容 集群</p><p>以后告别docker run</p><p>Docker-compose up 启动一个项目。单机</p><p>集群：swarm docker service</p><p>容器 &#x3D;&#x3D;服务</p><p>容器&#x3D;&#x3D;服务&#x3D;&#x3D;副本</p><p>redis 服务&#x3D;&#x3D;10副本 （同时开启10个容器）</p><p>体验：创建服务、动态扩展服务、动态更新服务。</p><p>需要掌握：搭建集群、启动服务、动态管理容器</p><h4 id="概念总结"><a href="#概念总结" class="headerlink" title="概念总结"></a>概念总结</h4><h5 id="swarm"><a href="#swarm" class="headerlink" title="swarm"></a>swarm</h5><p>集群的管理和编号。docker可以初始化一个swarm集群，其它节点都可以加入。（管理、工作者）</p><h5 id="node"><a href="#node" class="headerlink" title="node"></a>node</h5><p>就是一个docker节点。多个节点就组成一个网络集群</p><h5 id="service"><a href="#service" class="headerlink" title="service"></a>service</h5><p>任务，可以在管理节点或者工作节点来运行。核心！！！用户访问！</p><h5 id="task"><a href="#task" class="headerlink" title="task"></a>task</h5><p>容器内的命令，细节任务</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 笔记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>linux 命令</title>
       <link href="/2023/03/13/linux-ming-ling/"/>
       <url>/2023/03/13/linux-ming-ling/</url>
       
-        <content type="html"><![CDATA[]]></content>
+        <content type="html"><![CDATA[<h2 id="开关机命令"><a href="#开关机命令" class="headerlink" title="开关机命令"></a>开关机命令</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java">sync #<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h2 id="lsof命令"><a href="#lsof命令" class="headerlink" title="lsof命令"></a>lsof命令</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java">lsof <span class="token operator">-</span>i #列出所有网络连接，<span class="token operator">-</span>i显示所有监听和建立等的网络链接lsof <span class="token operator">-</span>u root #列出特定用户所有打开文件lsof <span class="token operator">-</span>i <span class="token constant">TCP</span><span class="token operator">:</span><span class="token number">22</span> #列出指定端口的所有进程lsof <span class="token operator">-</span>i <span class="token number">4</span><span class="token operator">/</span><span class="token number">6</span> #列出ipv4或者ipv6打开文件lsof <span class="token operator">-</span>i <span class="token constant">TCP</span><span class="token operator">:</span><span class="token number">1</span><span class="token operator">-</span><span class="token number">1024</span> #列出tcp端口在<span class="token number">1</span><span class="token operator">-</span><span class="token number">1024</span>的所打开文件的所有运行进程lsof <span class="token operator">-</span>i <span class="token operator">-</span>u<span class="token operator">^</span>root #排除用户用‘<span class="token operator">^</span>’字符lsof <span class="token operator">-</span>p <span class="token number">1</span> #显示进程<span class="token number">1</span>使用情况kill <span class="token operator">-</span><span class="token number">9</span> `lsof <span class="token operator">-</span>t <span class="token operator">-</span>u root` #杀死特定用户的所有进程<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
       
       
+      <categories>
+          
+          <category> linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 笔记 </tag>
+            
+        </tags>
       
     </entry>
     

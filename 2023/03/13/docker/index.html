@@ -5,7 +5,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="docker, Ares的博客">
-    <meta name="description" content="">
+    <meta name="description" content="Docker-compose三步骤：
+Dockerfile #Dockerfile 是一个用来构建镜像的文本文件，文本内容包含了一条条构建镜像所需的指令和说明。保证我们的项目在任何地方运行
+docker-compose.yml # Comp">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -100,7 +102,7 @@
       
       <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
       
-      <span>Categories</span>
+      <span>分类</span>
     </a>
     
   </li>
@@ -111,7 +113,7 @@
       
       <i class="fas fa-archive" style="zoom: 0.6;"></i>
       
-      <span>Archives</span>
+      <span>归档</span>
     </a>
     
   </li>
@@ -133,7 +135,7 @@
       
       <i class="fas fa-comments" style="zoom: 0.6;"></i>
       
-      <span>Contact</span>
+      <span>联系</span>
     </a>
     
   </li>
@@ -206,7 +208,7 @@
 			
 			    <i class="fa-fw fas fa-bookmark"></i>
 			
-			Categories
+			分类
 		</a>
           
         </li>
@@ -217,7 +219,7 @@
 			
 			    <i class="fa-fw fas fa-archive"></i>
 			
-			Archives
+			归档
 		</a>
           
         </li>
@@ -239,7 +241,7 @@
 			
 			    <i class="fa-fw fas fa-comments"></i>
 			
-			Contact
+			联系
 		</a>
           
         </li>
@@ -361,12 +363,25 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E7%AC%94%E8%AE%B0/">
+                                <span class="chip bg-color">笔记</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/linux/" class="post-category">
+                                linux
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -380,23 +395,118 @@
                 
 
                 
-
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
+                    2023-03-13
+                </div>
                 
 
                 
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
+                    660
+                </div>
+                
 
                 
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    2 Min
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
             </div>
         </div>
         <hr class="clearfix">
 
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
         
 
         
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h2 id="Docker-compose"><a href="#Docker-compose" class="headerlink" title="Docker-compose"></a>Docker-compose</h2><p>三步骤：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Dockerfile <span class="token comment">#Dockerfile 是一个用来构建镜像的文本文件，文本内容包含了一条条构建镜像所需的指令和说明。保证我们的项目在任何地方运行</span>
+docker-compose.yml <span class="token comment"># Compose 是用于定义和运行多容器 Docker 应用程序的工具。通过 Compose，您可以使用 YML 文件来配置应用程序需要的所有服务。然后，使用一个命令，就可以从 YML 文件配置中创建并启动所有服务。</span>
+
+
+Docker-compose up<span class="token comment">#启动项目</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>官网体验</p>
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/compose/gettingstarted/">https://docs.docker.com/compose/gettingstarted/</a></p>
+<p>用docker-compose部署redis</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">应用app.py
+dockerfile <span class="token comment">#应用打包为镜像</span>
+docker-compose.yml文件 <span class="token comment">#定义整个服务，需要的环境。web、redis 完整的上线服务</span>
+<span class="token function">docker-compose</span> <span class="token parameter variable">-up</span> <span class="token comment">#启动compose项目</span>
+流程
+<span class="token number">1</span>.创建网络
+<span class="token number">2</span>.执行docker-compose.yml
+<span class="token number">3</span>.启动服务<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>docker小结</p>
+<p>1.docker镜像。run&#x3D;&gt;容器</p>
+<p>2.dockerfile构建镜像（服务打包）</p>
+<p>3.docker-compose 启动项目（编排、多个微服务&#x2F;环境）</p>
+<p>4.docker网络</p>
+<h3 id="yaml规则"><a href="#yaml规则" class="headerlink" title="yaml规则"></a>yaml规则</h3><p>Docker-compose.yml 核心</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#3层</span>
+
+version:<span class="token string">''</span> <span class="token comment">#版本</span>
+services: <span class="token comment">#服务</span>
+	服务1:web
+	<span class="token comment">#服务配置</span>
+	images
+	build
+	network
+	。。。
+	服务2:redis
+	。。。
+	服务3.redis
+<span class="token comment">#其他配置 网络/卷 全局规则</span>
+volumes
+networks
+configs<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="Docker-swarm"><a href="#Docker-swarm" class="headerlink" title="Docker swarm"></a>Docker swarm</h2><h4 id="工作模式"><a href="#工作模式" class="headerlink" title="工作模式"></a>工作模式</h4><p>管理节点</p>
+<p>工作节点</p>
+<p>一般都有三个管理节点</p>
+<p><img src="/Users/guan/Desktop/Markdown/Docker/src=http%253A%252F%252Fupload.techweb.com.cn%252Fs%252F640%252F2021%252F0827%252F1630059366565.png&refer=http%253A%252F%252Fupload.techweb.com.png" alt="img"></p>
+<p>初始化节点 docker swarm init</p>
+<p>Docker swarm join 加入一个节点</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#获取令牌</span>
+<span class="token function">docker</span> swarm join-token manager
+<span class="token function">docker</span> swarm join-token worker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>1.生成主节点</p>
+<p>2.加入（管理者、worker）</p>
+<h4 id="raft协议"><a href="#raft协议" class="headerlink" title="raft协议"></a>raft协议</h4><p>保证大多数节点存活才可以用。只要大于&gt;1,集群至少大于3台！</p>
+<p>work就是工作的、管理节点操作！3台机器设置为了管理节点</p>
+<p>集群可用！三个主节点。&gt;1台管理节点存活</p>
+<p>raft协议：保证大多数节点存活，才可以使用，高可用</p>
+<h4 id="体会"><a href="#体会" class="headerlink" title="体会"></a>体会</h4><p>弹性、扩缩容 集群</p>
+<p>以后告别docker run</p>
+<p>Docker-compose up 启动一个项目。单机</p>
+<p>集群：swarm docker service</p>
+<p>容器 &#x3D;&#x3D;服务</p>
+<p>容器&#x3D;&#x3D;服务&#x3D;&#x3D;副本</p>
+<p>redis 服务&#x3D;&#x3D;10副本 （同时开启10个容器）</p>
+<p>体验：创建服务、动态扩展服务、动态更新服务。</p>
+<p>需要掌握：搭建集群、启动服务、动态管理容器</p>
+<h4 id="概念总结"><a href="#概念总结" class="headerlink" title="概念总结"></a>概念总结</h4><h5 id="swarm"><a href="#swarm" class="headerlink" title="swarm"></a>swarm</h5><p>集群的管理和编号。docker可以初始化一个swarm集群，其它节点都可以加入。（管理、工作者）</p>
+<h5 id="node"><a href="#node" class="headerlink" title="node"></a>node</h5><p>就是一个docker节点。多个节点就组成一个网络集群</p>
+<h5 id="service"><a href="#service" class="headerlink" title="service"></a>service</h5><p>任务，可以在管理节点或者工作节点来运行。核心！！！用户访问！</p>
+<h5 id="task"><a href="#task" class="headerlink" title="task"></a>task</h5><p>容器内的命令，细节任务</p>
+
                 
             </div>
             <hr/>
@@ -459,7 +569,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/%E7%AC%94%E8%AE%B0/">
+                                    <span class="chip bg-color">笔记</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -536,18 +650,17 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;Current
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2023/03/13/docker/">
+                <a href="/2023/03/13/java-ji-chu/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="docker">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
                         
-                        <span class="card-title">docker</span>
+                        <span class="card-title"></span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -557,9 +670,9 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-13
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-13
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -568,7 +681,6 @@
                         </span>
                     </div>
                 </div>
-
                 
             </div>
         </div>
@@ -600,11 +712,23 @@
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            Ares
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/linux/" class="post-category">
+                                    linux
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%AC%94%E8%AE%B0/">
+                        <span class="chip bg-color">笔记</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -620,6 +744,9 @@
 <!-- 代码块功能依赖 -->
 <script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
 
 
 <!-- 代码语言 -->
@@ -795,6 +922,9 @@
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             
             <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
+                        class="white-color">1.4k</span>
             
             
             
